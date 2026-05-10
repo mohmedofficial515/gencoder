@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Hybrid Synth Bridge</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      width: 280px;
+      padding: 12px;
+      margin: 0;
+      background: #1a1a1a;
+      color: #eee;
+    }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: #fff;
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: #2a2a2a;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f55;
+    }
+    .dot.ok { background: #5d5; }
+    .dot.warn { background: #fa3; }
+    .row {
+      font-size: 11px;
+      color: #aaa;
+      margin: 4px 0;
+    }
+    button {
+      width: 100%;
+      padding: 8px;
+      font-size: 12px;
+      background: #4c8eff;
+      color: white;
+      border: 0;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    button:hover { background: #6aa5ff; }
+    .small { font-size: 10px; color: #888; }
+  </style>
+</head>
+<body>
+  <h2>GenCoder — DeepSeek Bridge</h2>
+  <div class="status">
+    <div id="dot" class="dot"></div>
+    <div id="state">connecting...</div>
+  </div>
+  <div class="row">Tab: <span id="tab">—</span></div>
+  <div class="row">Last msg: <span id="last">—</span></div>
+  <div class="row">Error: <span id="err">—</span></div>
+  <button id="reconnect">Force reconnect</button>
+  <p class="small">
+    Open <code>chat.deepseek.com</code> and keep the tab live.<br/>
+    Server: ws://127.0.0.1:9876
+  </p>
+  <script src="popup.js"></script>
+</body>
+</html>

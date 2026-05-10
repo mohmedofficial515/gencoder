@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(find webview-ui/src -name \"platform.config*\")",
+      "Bash(ls webview-ui/src/config/)",
+      "Bash(node -e \"const ws = require\\('./node_modules/ws'\\); console.log\\('ws version:', require\\('./node_modules/ws/package.json'\\).version\\);\")",
+      "PowerShell($vsixExt = \\(Get-Item \"c:\\\\tmp\\\\vsix-check\\\\extracted\\\\extension\\\\dist\\\\extension.js\"\\).Length; $installed = \\(Get-Item \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\\\\dist\\\\extension.js\"\\).Length; Write-Host \"VSIX extension.js: $vsixExt bytes\"; Write-Host \"Installed extension.js: $installed bytes\")",
+      "PowerShell($vsixJs = \\(Get-Item \"c:\\\\tmp\\\\vsix-check\\\\extracted\\\\extension\\\\webview-ui\\\\build\\\\assets\\\\index.js\"\\).Length; $installed = \\(Get-Item \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\\\\webview-ui\\\\build\\\\assets\\\\index.js\"\\).Length; $src = \\(Get-Item \"c:\\\\gencoder\\\\webview-ui\\\\build\\\\assets\\\\index.js\"\\).Length; Write-Host \"VSIX index.js: $vsixJs bytes\"; Write-Host \"Installed index.js: $installed bytes\"; Write-Host \"Source index.js: $src bytes\")",
+      "Bash(python -c \"import json; p=json.load\\(open\\('package.json'\\)\\); print\\(json.dumps\\(p.get\\('activationEvents', []\\), indent=2\\)\\)\")",
+      "PowerShell($path = \"$env:USERPROFILE\\\\.cline\\\\data\\\\globalState.json\"; if \\(Test-Path $path\\) { $content = Get-Content $path -Raw; try { $null = $content | ConvertFrom-Json; Write-Host \"globalState.json is valid JSON, size: $\\($content.Length\\) bytes\" } catch { Write-Host \"INVALID JSON in globalState.json: $_\" } } else { Write-Host \"globalState.json does not exist\" })",
+      "Bash(node -e \"const p = require\\('./package.json'\\); Object.keys\\(p.scripts\\).forEach\\(k => console.log\\(k, ':', p.scripts[k]\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./package.json'\\); const scripts = p.scripts; console.log\\('build:webview:', scripts['build:webview']\\)\")",
+      "Bash(node -e \"const p = require\\('./webview-ui/package.json'\\); Object.keys\\(p.scripts\\).forEach\\(k => console.log\\(k, ':', p.scripts[k]\\)\\)\")",
+      "PowerShell($f = Get-Item \"c:\\\\gencoder\\\\dist\\\\extension.js\"; \"{0:N2} MB  |  {1}\" -f \\($f.Length / 1MB\\), $f.LastWriteTime)",
+      "Bash(npx vsce *)",
+      "Bash(grep -E \"\\(ts|js\\)$\")",
+      "Bash(grep -E \"\\\\.tsx?$\")",
+      "PowerShell($extDir = \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\"; if \\(Test-Path $extDir\\) { Remove-Item $extDir -Recurse -Force }; Expand-Archive -Path \"C:\\\\gencoder\\\\gencoder-3.82.0.vsix\" -DestinationPath \"$extDir-tmp\" -Force; Move-Item \"$extDir-tmp\\\\extension\" $extDir; Remove-Item \"$extDir-tmp\" -Recurse -Force; Write-Host \"Installed to $extDir\")",
+      "PowerShell($vsix = \"C:\\\\gencoder\\\\gencoder-3.82.0.vsix\"; $zip = \"C:\\\\gencoder\\\\gencoder-3.82.0.zip\"; $extDir = \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\"; Copy-Item $vsix $zip -Force; if \\(Test-Path $extDir\\) { Remove-Item $extDir -Recurse -Force }; Expand-Archive -Path $zip -DestinationPath \"$extDir-tmp\" -Force; Move-Item \"$extDir-tmp\\\\extension\" $extDir; Remove-Item \"$extDir-tmp\" -Recurse -Force; Remove-Item $zip -Force; Write-Host \"Installed to $extDir\")",
+      "PowerShell($extFile = \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\\\\dist\\\\extension.js\"; $content = Get-Content $extFile -Raw; @\\(\".gencoder/research\", \"rebuildResearchIndex\", \"refreshResearchIndex\", \"RESEARCH MODE\", \"Research mode\"\\) | ForEach-Object { Write-Host \"$_ : $\\($content.Contains\\($_\\)\\)\" })",
+      "Bash(Get-ChildItem -Path \"c:\\\\gencoder\" -Directory -Force)",
+      "Bash(Select-Object -First 20)",
+      "Bash(find /c/gencoder/src/core/api/providers -type d -name deepseek*)",
+      "Bash(xargs wc *)",
+      "PowerShell(Select-String -Path \"c:\\\\gencoder\\\\proto\\\\cline\\\\state.proto\" -Pattern \"= \\\\d+;\" | Select-Object -Last 20 | ForEach-Object { $_.Line.Trim\\(\\) })",
+      "PowerShell($content = Get-Content \"c:\\\\gencoder\\\\proto\\\\cline\\\\state.proto\" -Raw; $numbers = [regex]::Matches\\($content, '= \\(\\\\d+\\);'\\) | ForEach-Object { [int]$_.Groups[1].Value } | Sort-Object -Unique; \"Max field number: $\\($numbers | Sort-Object | Select-Object -Last 1\\)\"; $content -split \"`n\" | Where-Object { $_ -match \"= \\(1[89]\\\\d|2\\\\d\\\\d|3\\\\d\\\\d\\)\" } | Select-Object -Last 20)",
+      "Read(//c/gencoder/dist/**)",
+      "Bash(gh auth *)",
+      "Bash(git remote *)",
+      "Bash(git push *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/claude-code-for-web-setup.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

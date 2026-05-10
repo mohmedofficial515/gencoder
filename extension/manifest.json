@@ -1,0 +1,57 @@
+{
+	"manifest_version": 3,
+	"name": "GenCoder — DeepSeek Bridge",
+	"version": "0.4.2",
+	"description": "Bridges chat.deepseek.com to the DeepSeek Bridge WS server.",
+	"permissions": [
+		"storage",
+		"tabs",
+		"scripting"
+	],
+	"host_permissions": [
+		"https://chat.deepseek.com/*",
+		"http://127.0.0.1:9876/*",
+		"ws://127.0.0.1:9876/*"
+	],
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://chat.deepseek.com/*"
+			],
+			"js": [
+				"injected.js"
+			],
+			"run_at": "document_start",
+			"world": "MAIN",
+			"all_frames": false
+		},
+		{
+			"matches": [
+				"https://chat.deepseek.com/*"
+			],
+			"js": [
+				"content.js"
+			],
+			"run_at": "document_start",
+			"all_frames": false
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"injected.js"
+			],
+			"matches": [
+				"https://chat.deepseek.com/*"
+			]
+		}
+	],
+	"action": {
+		"default_popup": "popup.html",
+		"default_title": "GenCoder DeepSeek Bridge"
+	}
+}
