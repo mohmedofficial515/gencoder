@@ -1,0 +1,39 @@
+
+> gencoder@3.82.0 compile
+> npm run check-types && npm run lint && node esbuild.mjs
+
+
+> gencoder@3.82.0 check-types
+> npm run protos && npx tsc --noEmit && cd webview-ui && npx tsc --noEmit && cd ../cli && npx tsc --noEmit
+
+
+> gencoder@3.82.0 protos
+> node scripts/build-proto.mjs
+
+Compiling Protocol Buffers...
+Processing 21 proto files from C:\gencoder\proto
+Generated ProtoBus files at:
+- C:\gencoder\webview-ui\src\services\grpc-client.ts
+- C:\gencoder\src\generated\hosts\vscode\protobus-service-types.ts
+- C:\gencoder\src\generated\hosts\vscode\protobus-services.ts
+- C:\gencoder\src\generated\hosts\standalone\protobus-server-setup.ts
+Generated Host Bridge client files at:
+- C:\gencoder\src\generated\hosts\host-bridge-client-types.ts
+- C:\gencoder\src\generated\hosts\standalone\host-bridge-clients.ts
+- C:\gencoder\src\generated\hosts\vscode\hostbridge-grpc-service-config.ts
+
+> gencoder@3.82.0 postprotos
+> biome format src/shared/proto src/core/controller src/hosts/ webview-ui/src/services src/generated --write --no-errors-on-unmatched
+
+Formatted 271 files in 72ms. No fixes applied.
+
+> gencoder@3.82.0 lint
+> biome lint --no-errors-on-unmatched --files-ignore-unknown=true --diagnostic-level=error && npm run lint:proto
+
+Checked 1503 files in 5s. No fixes applied.
+
+> gencoder@3.82.0 lint:proto
+> bash ./scripts/proto-lint.sh
+
+[watch] build started
+[watch] build finished

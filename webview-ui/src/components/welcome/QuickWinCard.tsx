@@ -1,49 +1,57 @@
 import React from "react"
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
+import { cn } from "@/lib/utils"
 import { QuickWinTask } from "./quickWinTasks"
 
 interface QuickWinCardProps {
 	task: QuickWinTask
 	onExecute: () => void
+	isPending?: boolean
+	disabled?: boolean
 }
 
-const renderIcon = (iconName?: string) => {
-	if (!iconName) {
-		return <span className="codicon codicon-rocket text-[28px]! leading-none!"></span>
-	}
-
-	let iconClass = "codicon-rocket"
-	switch (iconName) {
-		case "WebAppIcon":
-			iconClass = "codicon-dashboard"
-			break
-		case "TerminalIcon":
-			iconClass = "codicon-terminal"
-			break
-		case "GameIcon":
-			iconClass = "codicon-game"
-			break
-		default:
-			break
-	}
-	return <span className={`codicon ${iconClass} text-[28px]! leading-none!`}></span>
+const ICON_BY_NAME: Record<string, string> = {
+	WebAppIcon: "codicon-dashboard",
+	TerminalIcon: "codicon-terminal",
+	GameIcon: "codicon-game",
 }
 
-const QuickWinCard: React.FC<QuickWinCardProps> = ({ task, onExecute }) => {
+const renderIcon = (iconName?: string, isPending = false) => {
+	if (isPending) {
+		return (
+			<span
+				aria-hidden="true"
+				className="codicon codicon-loading codicon-modifier-spin motion-reduce:codicon-modifier-disable-spin text-[20px]! leading-none!"
+			/>
+		)
+	}
+	const iconClass = (iconName && ICON_BY_NAME[iconName]) || "codicon-rocket"
+	return <span aria-hidden="true" className={`codicon ${iconClass} text-[20px]! leading-none!`} />
+}
+
+const QuickWinCard: React.FC<QuickWinCardProps> = ({ task, onExecute, isPending = false, disabled = false }) => {
+	const isDisabled = disabled || isPending
+	const ariaLabel = `${task.title}. ${task.description}`
+
 	return (
-		<div
-			className="flex items-center mb-2 py-0 px-5 space-x-3 rounded-full cursor-pointer group transition-colors duration-150 ease-in-out bg-white/2 border border-(--vscode-panel-border) hover:bg-(--vscode-list-hoverBackground)"
-			onClick={() => onExecute()}>
-			<div className="shrink-0 flex items-center justify-center w-6 h-6 text-(--vscode-icon-foreground)">
-				{renderIcon(task.icon)}
-			</div>
-
-			<div className="grow min-w-0">
-				<h3 className="text-sm font-medium truncate text-(--vscode-editor-foreground) leading-tight mb-0 mt-0 pt-3">
-					{task.title}
-				</h3>
-				<p className="text-xs truncate text-(--vscode-descriptionForeground) leading-tight mt-px">{task.description}</p>
-			</div>
-		</div>
+		<Item
+			asChild
+			className={cn(
+				"w-full text-left bg-transparent border border-border-panel",
+				"motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-in-out",
+				"hover:bg-list-background-hover",
+				"disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+				"focus-visible:bg-list-background-hover",
+			)}
+			size="sm">
+			<button aria-label={ariaLabel} disabled={isDisabled} onClick={onExecute} type="button">
+				<ItemMedia className="text-icon-foreground">{renderIcon(task.icon, isPending)}</ItemMedia>
+				<ItemContent>
+					<ItemTitle className="text-foreground truncate">{task.title}</ItemTitle>
+					<ItemDescription className="text-description truncate">{task.description}</ItemDescription>
+				</ItemContent>
+			</button>
+		</Item>
 	)
 }
 
