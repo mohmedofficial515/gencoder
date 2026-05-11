@@ -462,6 +462,7 @@ enum ApiProvider {
   OPENAI_CODEX = 40;
   WANDB = 41;
   DEEPSEEK_BRIDGE = 42;
+  DEEPSEEK_WEBAPI = 43;
 }
 
 enum ApiFormat {

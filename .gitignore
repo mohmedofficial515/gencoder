@@ -56,3 +56,6 @@ evals/smoke-tests/results/
 secrets.json
 tui-traces
 tests/**/cache
+
+# GenCoder research cache (auto-generated)
+.gencoder/research/.cache/

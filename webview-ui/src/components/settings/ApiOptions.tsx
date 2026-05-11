@@ -22,6 +22,7 @@ import { ClaudeCodeProvider } from "./providers/ClaudeCodeProvider"
 import { ClineProvider } from "./providers/ClineProvider"
 import { DeepSeekBridgeProvider } from "./providers/DeepSeekBridgeProvider"
 import { DeepSeekProvider } from "./providers/DeepSeekProvider"
+import { DeepSeekWebApiProvider } from "./providers/DeepSeekWebApiProvider"
 import { DifyProvider } from "./providers/DifyProvider"
 import { DoubaoProvider } from "./providers/DoubaoProvider"
 import { FireworksProvider } from "./providers/FireworksProvider"
@@ -487,6 +488,10 @@ const ApiOptions = ({
 
 			{apiConfiguration && selectedProvider === "deepseek-bridge" && (
 				<DeepSeekBridgeProvider currentMode={currentMode} isPopup={isPopup} showModelOptions={showModelOptions} />
+			)}
+
+			{apiConfiguration && selectedProvider === "deepseek-webapi" && (
+				<DeepSeekWebApiProvider currentMode={currentMode} isPopup={isPopup} showModelOptions={showModelOptions} />
 			)}
 
 			{apiConfiguration && selectedProvider === "xai" && (

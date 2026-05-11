@@ -13,6 +13,7 @@ import { ClaudeCodeHandler } from "./providers/claude-code"
 import { ClineHandler } from "./providers/cline"
 import { DeepSeekHandler } from "./providers/deepseek"
 import { DeepSeekBridgeHandler } from "./providers/deepseek-bridge"
+import { DeepSeekWebApiHandler } from "./providers/deepseek-webapi/handler"
 import { DifyHandler } from "./providers/dify"
 import { DoubaoHandler } from "./providers/doubao"
 import { FireworksHandler } from "./providers/fireworks"
@@ -465,6 +466,8 @@ function createHandlerForProvider(
 			})
 		case "deepseek-bridge":
 			return new DeepSeekBridgeHandler()
+		case "deepseek-webapi":
+			return new DeepSeekWebApiHandler()
 		default:
 			return new AnthropicHandler({
 				onRetryAttempt: options.onRetryAttempt,

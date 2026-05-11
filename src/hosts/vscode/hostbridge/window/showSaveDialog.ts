@@ -12,7 +12,7 @@ export async function showSaveDialog(request: ShowSaveDialogRequest): Promise<Sh
 
 	if (options?.filters && Object.keys(options.filters).length > 0) {
 		vscodeOptions.filters = {}
-		Object.entries(options.filters).forEach(([name, extensionList]) => {
+		Object.entries(options.filters).forEach(([name, extensionList]: [string, { extensions: string[] }]) => {
 			vscodeOptions.filters![name] = extensionList.extensions
 		})
 	}

@@ -45,6 +45,7 @@ export type ApiProvider =
 	| "nousResearch"
 	| "wandb"
 	| "deepseek-bridge"
+	| "deepseek-webapi"
 
 export const DEFAULT_API_PROVIDER = "openrouter" as ApiProvider
 
@@ -5077,3 +5078,20 @@ export const deepSeekBridgeModels = {
 
 export type DeepSeekBridgeModelId = keyof typeof deepSeekBridgeModels
 export const deepSeekBridgeDefaultModelId = "deepseek-bridge" satisfies DeepSeekBridgeModelId
+
+// DeepSeek Web API (direct — bearer token extracted by Chrome extension, no DOM needed)
+export const deepSeekWebApiModels = {
+	"deepseek-webapi": {
+		maxTokens: 8192,
+		contextWindow: 131_072,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0,
+		outputPrice: 0,
+		description:
+			"DeepSeek direct web API — uses bearer token extracted by the GenCoder Chrome extension. No API key required.",
+	},
+} as const satisfies Record<string, ModelInfo>
+
+export type DeepSeekWebApiModelId = keyof typeof deepSeekWebApiModels
+export const deepSeekWebApiDefaultModelId = "deepseek-webapi" satisfies DeepSeekWebApiModelId

@@ -16,6 +16,12 @@ const LOW_STAKES_TOOLS = new Set([
 	"listFilesRecursive",
 	"listCodeDefinitionNames",
 	"searchFiles",
+	"write_to_file",
+	"replace_in_file",
+	"editedExistingFile",
+	"newFileCreated",
+	"fileDeleted",
+	"execute_command",
 ])
 
 /**

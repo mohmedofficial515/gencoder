@@ -48,6 +48,20 @@ let extensionWs: WebSocket | null = null
 let lastError: string | null = null
 const pending = new Map<string, PendingRequest>()
 
+// Credentials received from the extension (bearerToken + optional cookies)
+let _bearerToken = ""
+let _cookies = ""
+
+export function getBridgeCredentials() {
+	return { bearerToken: _bearerToken, cookies: _cookies }
+}
+
+export function setBridgeCredentials(bearerToken: string, cookies: string) {
+	_bearerToken = bearerToken
+	_cookies = cookies
+	Logger.log("[DeepSeek Bridge] Credentials updated — token length:", bearerToken.length)
+}
+
 export function getBridgeStatus() {
 	return {
 		connected: extensionWs !== null && extensionWs.readyState === WebSocket.OPEN,
@@ -177,6 +191,19 @@ function handleExtensionMessage(raw: string) {
 
 	if (type === "hello") {
 		Logger.log("[DeepSeek Bridge] Chrome extension connected")
+		// Ask extension to send its bearer token immediately
+		try {
+			extensionWs?.send(JSON.stringify({ type: "request_token" }))
+		} catch {
+			/* ignore */
+		}
+		return
+	}
+
+	if (type === "token") {
+		const token = (msg.bearerToken as string) || ""
+		const cookies = (msg.cookies as string) || ""
+		setBridgeCredentials(token, cookies)
 		return
 	}
 

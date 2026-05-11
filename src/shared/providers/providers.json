@@ -5,6 +5,10 @@
 			"label": "DeepSeek (Free Bridge)"
 		},
 		{
+			"value": "deepseek-webapi",
+			"label": "DeepSeek (Web API - Direct)"
+		},
+		{
 			"value": "cline",
 			"label": "Cline"
 		},

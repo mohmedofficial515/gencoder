@@ -117,6 +117,8 @@ function connect() {
 			/* ignore */
 		}
 		startHeartbeat()
+		// Send token immediately on connect
+		sendBearerTokenToServer()
 	}
 
 	ws.onmessage = async (event) => {
@@ -134,6 +136,9 @@ function connect() {
 			await handleNewChat(msg)
 		} else if (msg.type === "attach_image") {
 			await handleAttachImage(msg)
+		} else if (msg.type === "request_token") {
+			// Server is asking for the bearer token (used by direct web API approach)
+			sendBearerTokenToServer()
 		} else if (msg.type === "ack" || msg.type === "pong") {
 			// server-side liveness — nothing to do
 		}
@@ -301,5 +306,60 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 	}
 	return true
 })
+
+// ── Bearer token extraction ──────────────────────────────────────────────────
+// Reads localStorage.userToken from the active DeepSeek tab and sends it to
+// the WS server so the direct web API approach can authenticate without DOM.
+
+async function sendBearerTokenToServer() {
+	if (!ws || ws.readyState !== WebSocket.OPEN) return
+
+	const tab = await findDeepSeekTab()
+	if (!tab) return
+
+	let bearerToken = ""
+	try {
+		const results = await chrome.scripting.executeScript({
+			target: { tabId: tab.id },
+			world: "MAIN",
+			func: () => {
+				try {
+					const raw = localStorage.getItem("userToken")
+					if (!raw) return ""
+					const parsed = JSON.parse(raw)
+					return parsed?.value || parsed || ""
+				} catch {
+					return ""
+				}
+			},
+		})
+		bearerToken = results?.[0]?.result || ""
+	} catch (e) {
+		console.warn("[hs-bridge] Failed to extract bearer token:", e)
+		return
+	}
+
+	if (!bearerToken) return
+
+	// Also collect visible (non-HttpOnly) cookies from the page
+	let cookies = ""
+	try {
+		const cookieResults = await chrome.scripting.executeScript({
+			target: { tabId: tab.id },
+			world: "MAIN",
+			func: () => document.cookie,
+		})
+		cookies = cookieResults?.[0]?.result || ""
+	} catch {
+		/* ignore — cookies are optional, Bearer token + PoW is sufficient */
+	}
+
+	try {
+		ws.send(JSON.stringify({ type: "token", bearerToken, cookies }))
+		console.log("[hs-bridge] Bearer token sent to server, length:", bearerToken.length)
+	} catch {
+		/* ignore */
+	}
+}
 
 connect()

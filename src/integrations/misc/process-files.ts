@@ -5,6 +5,8 @@ import { HostProvider } from "@/hosts/host-provider"
 import { ShowMessageType } from "@/shared/proto/host/window"
 import { Logger } from "@/shared/services/Logger"
 
+type ProcessedFileResult = { type: "image"; data: string } | { type: "file"; data: string } | null
+
 /**
  * Supports processing of images and other file types
  * For models which don't support images, will not allow them to be selected
@@ -27,7 +29,7 @@ export async function selectFiles(imagesAllowed: boolean): Promise<{ images: str
 		return { images: [], files: [] }
 	}
 
-	const processFilesPromises = filePaths.map(async (filePath) => {
+	const processFilesPromises = filePaths.map(async (filePath: string) => {
 		const fileExtension = path.extname(filePath).toLowerCase().substring(1)
 
 		const isImage = IMAGE_EXTENSIONS.includes(fileExtension)
@@ -62,40 +64,41 @@ export async function selectFiles(imagesAllowed: boolean): Promise<{ images: str
 			const mimeType = getMimeType(filePath)
 
 			return { type: "image", data: `data:${mimeType};base64,${base64}` }
-		} else {
-			// for standard models we will check the size of the file to ensure its not too large
-			try {
-				const stats = await fs.stat(filePath)
-				if (stats.size > 20 * 1000 * 1024) {
-					Logger.warn(`File too large, skipping: ${filePath}`)
-					HostProvider.window.showMessage({
-						type: ShowMessageType.ERROR,
-						message: `File too large: ${path.basename(filePath)} was skipped (size exceeds 20MB).`,
-					})
-					return null
-				}
-			} catch (error) {
-				Logger.error(`Error checking file size for ${filePath}:`, error)
+		}
+		// for standard models we will check the size of the file to ensure its not too large
+		try {
+			const stats = await fs.stat(filePath)
+			if (stats.size > 20 * 1000 * 1024) {
+				Logger.warn(`File too large, skipping: ${filePath}`)
 				HostProvider.window.showMessage({
 					type: ShowMessageType.ERROR,
-					message: `Could not check file size for ${path.basename(filePath)}, skipping.`,
+					message: `File too large: ${path.basename(filePath)} was skipped (size exceeds 20MB).`,
 				})
 				return null
 			}
-			return { type: "file", data: filePath }
+		} catch (error) {
+			Logger.error(`Error checking file size for ${filePath}:`, error)
+			HostProvider.window.showMessage({
+				type: ShowMessageType.ERROR,
+				message: `Could not check file size for ${path.basename(filePath)}, skipping.`,
+			})
+			return null
 		}
+		return { type: "file", data: filePath }
 	})
 
 	const dataUrlsWithNulls = await Promise.all(processFilesPromises)
-	const dataUrlsWithoutNulls = dataUrlsWithNulls.filter((item) => item !== null)
+	const dataUrlsWithoutNulls = dataUrlsWithNulls.filter(
+		(item): item is { type: "image"; data: string } | { type: "file"; data: string } => item !== null,
+	)
 
 	const images: string[] = []
 	const files: string[] = []
 
 	for (const item of dataUrlsWithoutNulls) {
-		if (item.type === "image") {
+		if (item && item.type === "image") {
 			images.push(item.data)
-		} else {
+		} else if (item && item.type === "file") {
 			files.push(item.data)
 		}
 	}

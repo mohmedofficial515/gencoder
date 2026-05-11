@@ -17,6 +17,8 @@ import {
 	deepSeekBridgeModels,
 	deepSeekDefaultModelId,
 	deepSeekModels,
+	deepSeekWebApiDefaultModelId,
+	deepSeekWebApiModels,
 	doubaoDefaultModelId,
 	doubaoModels,
 	fireworksDefaultModelId,
@@ -126,6 +128,8 @@ export function getModelsForProvider(
 			return wandbModels
 		case "deepseek-bridge":
 			return deepSeekBridgeModels
+		case "deepseek-webapi":
+			return deepSeekWebApiModels
 		case "sambanova":
 			return sambanovaModels
 		case "cerebras":
@@ -385,6 +389,8 @@ export function normalizeApiConfiguration(
 			return getProviderData(wandbModels, wandbDefaultModelId)
 		case "deepseek-bridge":
 			return getProviderData(deepSeekBridgeModels, deepSeekBridgeDefaultModelId)
+		case "deepseek-webapi":
+			return getProviderData(deepSeekWebApiModels, deepSeekWebApiDefaultModelId)
 		case "sambanova":
 			return getProviderData(sambanovaModels, sambanovaDefaultModelId)
 		case "cerebras":
