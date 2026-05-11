@@ -1,4 +1,4 @@
-﻿export enum NEW_USER_TYPE {
+export enum NEW_USER_TYPE {
 	FREE = "free",
 	POWER = "power",
 	BYOK = "byok",
@@ -13,7 +13,7 @@ type UserTypeSelection = {
 export const STEP_CONFIG = {
 	0: {
 		title: "How will you use GenCoder?",
-		description: "Select an option below to get started.",
+		description: "Choose how you want to power your assistant.",
 		buttons: [
 			{ text: "Continue", action: "next", variant: "default" },
 			{ text: "Login to GenCoder", action: "signin", variant: "secondary" },
@@ -42,13 +42,17 @@ export const STEP_CONFIG = {
 	},
 	2: {
 		title: "Almost there!",
-		description: "Complete account creation in your browser. Then come back here to finish up.",
+		description: "We opened your browser to finish sign-in. Come back here when you're done.",
 		buttons: [{ text: "Back", action: "back", variant: "secondary" }],
 	},
 } as const
 
 export const USER_TYPE_SELECTIONS: UserTypeSelection[] = [
-	{ title: "Absolutely Free", description: "Get started at no cost", type: NEW_USER_TYPE.FREE },
-	{ title: "Frontier Model", description: "Claude, GPT Codex, Gemini, etc.", type: NEW_USER_TYPE.POWER },
-	{ title: "Bring my own API key", description: "Use GenCoder with your provider of choice", type: NEW_USER_TYPE.BYOK },
+	{ title: "Free", description: "Hosted models with no upfront cost", type: NEW_USER_TYPE.FREE },
+	{
+		title: "Premium models",
+		description: "Claude, GPT, Gemini and other top-tier models",
+		type: NEW_USER_TYPE.POWER,
+	},
+	{ title: "Use my own API key", description: "Connect to any supported provider", type: NEW_USER_TYPE.BYOK },
 ]

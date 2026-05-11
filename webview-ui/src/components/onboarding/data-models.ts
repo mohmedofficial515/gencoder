@@ -19,10 +19,10 @@ export function getClineUIOnboardingGroups(groupedModels: OnboardingModelGroup):
 	const openSourceModels = models.filter((m) => m.group === "open source")
 
 	return {
-		free: freeModels.length > 0 ? [{ group: "free", models: freeModels }] : [],
+		free: freeModels.length > 0 ? [{ group: "Free", models: freeModels }] : [],
 		power: [
-			...(frontierModels.length > 0 ? [{ group: "frontier", models: frontierModels }] : []),
-			...(openSourceModels.length > 0 ? [{ group: "open source", models: openSourceModels }] : []),
+			...(frontierModels.length > 0 ? [{ group: "Frontier", models: frontierModels }] : []),
+			...(openSourceModels.length > 0 ? [{ group: "Open source", models: openSourceModels }] : []),
 		],
 	}
 }
