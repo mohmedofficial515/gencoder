@@ -1,0 +1,15 @@
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> gencoder@3.82.0 vscode:prepublish
+> echo already-built
+
+already-built
+ INFO  Files included in the VSIX:
+gencoder-qa-2026-05-11-2302.vsix
+├─ [Content_Types].xml 
+├─ extension.vsixmanifest 
+└─ extension/ (222 files) [70.54 MB]
+
+=> Run vsce ls --tree to see all included files.
+
+ DONE  Packaged: dist/gencoder-qa-2026-05-11-2302.vsix (224 files, 18.14 MB)

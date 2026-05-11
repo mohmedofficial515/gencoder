@@ -1,0 +1,32 @@
+{
+	"permissions": {
+		"allow": [
+			"PowerShell(cd \"f:\\\\tools\\\\my ai\\\\gencoder\"; $env:VSIX_OUT = \"dist\\\\gencoder.vsix\"; if \\(-not \\(Test-Path \"dist\"\\)\\) { New-Item -ItemType Directory \"dist\" }; npx vsce package --allow-package-secrets sendgrid --out \"dist\\\\gencoder.vsix\" 2>&1 | Select-String \"DONE|ERROR|Packaged\")",
+			"PowerShell(Get-Item \"f:\\\\tools\\\\my ai\\\\gencoder\\\\dist\\\\gencoder.vsix\" | Select-Object Name, @{n='Size';e={\"{0:N2} MB\" -f \\($_.Length/1MB\\)}})",
+			"Bash(Get-ChildItem -Path \"f:\\\\tools\\\\my ai\\\\gencoder\" -Recurse -File -Filter \"*.ts\")",
+			"Bash(Select-Object -ExpandProperty FullName)",
+			"Bash(node esbuild.js --production)",
+			"Bash(node esbuild.mjs --production)",
+			"Bash(set VSIX_OUT=dist\\\\gencoder.vsix)",
+			"Bash(not exist *)",
+			"PowerShell(cd \"f:\\\\tools\\\\my ai\\\\gencoder\"; if \\(-not \\(Test-Path \"dist\"\\)\\) { New-Item -ItemType Directory -Path \"dist\" }; npx vsce package --allow-package-secrets sendgrid --out \"dist\\\\gencoder.vsix\" 2>&1 | Select-Object -Last 8)",
+			"Bash(npm ls *)",
+			"Bash(node esbuild.mjs)",
+			"Bash(node --check dist/extension.js)",
+			"Bash(node --check cli/dist/cli.mjs)",
+			"Bash(node --check cli/dist/lib.mjs)",
+			"Read(//f/tools/my ai/gencoder/**)",
+			"Bash(grep -iE \"\\(better-sqlite3|\\\\.node$|tree-sitter-wasms\\)\")",
+			"Bash(grep -oE \"[a-zA-Z_0-9./-]{0,30}\\\\\\\\.node[^a-zA-Z]\" dist/extension.js)",
+			"Bash(grep -oE \"[\\\\\"'][^\\\\\"']{0,80}\\\\\\\\.node[\\\\\"']\" dist/extension.js)",
+			"Bash(grep -oE \"[a-zA-Z._0-9-]{0,20}better.{0,30}\" dist/extension.js)",
+			"Bash(grep -oE \"\\\\\\\\b[a-zA-Z_]*Database[a-zA-Z_]{0,5}\" dist/extension.js)",
+			"Bash(tasklist //FI \"IMAGENAME eq node.exe\")",
+			"Bash(xargs grep *)",
+			"Bash(python -c \"import json,sys; p=json.load\\(sys.stdin\\); print\\('deps:', p.get\\('dependencies',{}\\).get\\('winston', 'no'\\)\\); print\\('peer:', p.get\\('peerDependencies',{}\\).get\\('winston', 'no'\\)\\)\")"
+		],
+		"additionalDirectories": [
+			"F:\\tools\\my ai\\gencoder"
+		]
+	}
+}
