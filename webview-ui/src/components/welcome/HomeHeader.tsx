@@ -2,6 +2,7 @@ import { EmptyRequest } from "@shared/proto/cline/common"
 import ClineLogoSanta from "@/assets/ClineLogoSanta"
 import ClineLogoTired from "@/assets/ClineLogoTired"
 import ClineLogoVariable from "@/assets/ClineLogoVariable"
+import { Button } from "@/components/ui/button"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { UiServiceClient } from "@/services/grpc-client"
 
@@ -25,23 +26,24 @@ const HomeHeader = ({ shouldShowQuickWins = false }: HomeHeaderProps) => {
 	const LogoComponent = lazyTeammateModeEnabled ? ClineLogoTired : isDecember ? ClineLogoSanta : ClineLogoVariable
 	const headingText = lazyTeammateModeEnabled ? "I guess I'm here to help" : "What can I do for you?"
 
+	// Per SPEC §7 risk: ClineLogoSanta needs more vertical room for the hat, so
+	// special-case it to size-16 (64px). All other variants use size-14 (56px).
+	const logoSize = isDecember && !lazyTeammateModeEnabled ? "size-16" : "size-14"
+
 	return (
 		<div className="flex flex-col items-center mb-5">
-			<div className="my-7">
-				<LogoComponent className="size-20" environment={environment} />
+			<div className="my-3">
+				<LogoComponent className={logoSize} environment={environment} />
 			</div>
 			<div className="text-center flex items-center justify-center px-4">
 				<h1 className="m-0 font-bold">{headingText}</h1>
 			</div>
 			{shouldShowQuickWins && (
-				<div className="mt-4">
-					<button
-						className="flex items-center gap-2 px-4 py-2 rounded-full border border-border-panel bg-white/2 hover:bg-list-background-hover transition-colors duration-150 ease-in-out text-code-foreground text-sm font-medium cursor-pointer"
-						onClick={handleTakeATour}
-						type="button">
-						Take a Tour
-						<span className="codicon codicon-play scale-90" />
-					</button>
+				<div className="mt-2">
+					<Button onClick={handleTakeATour} size="sm" type="button" variant="ghost">
+						Take a tour
+						<span aria-hidden="true" className="codicon codicon-play scale-90" />
+					</Button>
 				</div>
 			)}
 		</div>
