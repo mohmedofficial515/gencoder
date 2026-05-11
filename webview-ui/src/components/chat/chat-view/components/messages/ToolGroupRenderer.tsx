@@ -1,5 +1,15 @@
 import { ClineMessage, ClineSayTool } from "@shared/ExtensionMessage"
 import { StringRequest } from "@shared/proto/cline/common"
+import {
+	FilePlus2Icon,
+	FolderOpenDotIcon,
+	FolderOpenIcon,
+	PencilIcon,
+	SearchIcon,
+	ShapesIcon,
+	TerminalIcon,
+	Trash2Icon,
+} from "lucide-react"
 import { memo, useCallback, useMemo, useState } from "react"
 import { TypewriterText } from "@/components/chat/TypewriterText"
 import { cleanPathPrefix } from "@/components/common/CodeAccordian"
@@ -293,37 +303,79 @@ function parseToolSafe(text: string | undefined): ClineSayTool {
 /**
  * Get display info for a tool.
  */
-function getToolDisplayInfo(tool: ClineSayTool) {
-	const icon = getIconByToolName(tool.tool)
+function getToolDisplayInfo(tool: any) {
 	const filePath = tool.path || ""
 	const folderPath = filePath + "/"
+
+	// Get custom icon based on tool type
+	let icon = getIconByToolName(tool.tool)
+	let displayText = ""
+	let path = ""
 
 	switch (tool.tool) {
 		case "readFile": {
 			const lineNote =
-				tool.readLineStart != null && tool.readLineEnd != null ? `lines ${tool.readLineStart}-${tool.readLineEnd}` : null
-			return {
-				icon,
-				path: filePath,
-				label: "read",
-				displayText: lineNote ? `${cleanPathPrefix(filePath)} · ${lineNote}` : undefined,
-			}
+				tool.readLineStart != null && tool.readLineEnd != null ? ` (lines ${tool.readLineStart}-${tool.readLineEnd})` : ""
+			displayText = `Read ${cleanPathPrefix(filePath)}${lineNote}`
+			path = filePath
+			break
 		}
 		case "listFilesTopLevel":
-			return { icon, path: folderPath, label: "listed" }
+			icon = FolderOpenIcon
+			displayText = `Listed ${cleanPathPrefix(folderPath)}`
+			path = folderPath
+			break
 		case "listFilesRecursive":
-			return { icon, path: folderPath, label: "listed recursively" }
+			icon = FolderOpenDotIcon
+			displayText = `Listed recursively ${cleanPathPrefix(folderPath)}`
+			path = folderPath
+			break
 		case "listCodeDefinitionNames":
-			return { icon, path: folderPath, label: "definitions" }
+			icon = ShapesIcon
+			displayText = `Analyzed definitions in ${cleanPathPrefix(folderPath)}`
+			path = folderPath
+			break
 		case "searchFiles":
-			return {
-				icon,
-				path: folderPath,
-				label: `search: ${tool.regex}`,
-				displayText: formatSearchDisplay(tool.regex || "", filePath, tool.filePattern),
-			}
+			icon = SearchIcon
+			displayText = formatSearchDisplay(tool.regex || "", filePath, tool.filePattern)
+			path = folderPath
+			break
+		case "write_to_file":
+			icon = FilePlus2Icon
+			displayText = `Created ${cleanPathPrefix(filePath)}`
+			path = filePath
+			break
+		case "replace_in_file":
+		case "editedExistingFile":
+			icon = PencilIcon
+			displayText = `Modified ${cleanPathPrefix(filePath)}`
+			path = filePath
+			break
+		case "newFileCreated":
+			icon = FilePlus2Icon
+			displayText = `Created new file ${cleanPathPrefix(filePath)}`
+			path = filePath
+			break
+		case "fileDeleted":
+			icon = Trash2Icon
+			displayText = `Deleted ${cleanPathPrefix(filePath)}`
+			path = filePath
+			break
+		case "execute_command":
+			icon = TerminalIcon
+			const command = tool.command || ""
+			const truncatedCommand = command.length > 50 ? command.substring(0, 47) + "..." : command
+			displayText = `Executed: ${truncatedCommand}`
+			path = ""
+			break
 		default:
 			return null
+	}
+
+	return {
+		icon,
+		path,
+		displayText,
 	}
 }
 

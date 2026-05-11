@@ -1,4 +1,4 @@
-import { createHash } from "crypto"
+import { sha3_256 } from "@noble/hashes/sha3.js"
 import { fetch } from "@/shared/net"
 
 export interface PoWChallenge {
@@ -65,20 +65,18 @@ export async function fetchPoWChallenge(
 	return json.data.biz_data.challenge as PoWChallenge
 }
 
-/**
- * DeepSeekHashV1: SHA3-256(challenge + salt + nonce) where first 4 bytes as uint32BE
- * must be less than floor(2^32 / difficulty).
- * The browser loads sha3_wasm_bg — confirmed SHA3-256 by empirical testing.
- */
+// SHA3-256 via @noble/hashes — works in Electron even when native OpenSSL lacks SHA3.
+// DeepSeekHashV1: SHA3-256(challenge + salt + nonce) where first 4 bytes as uint32BE
+// must be less than floor(2^32 / difficulty).
 export function solvePoW(ch: PoWChallenge): PoWAnswer {
 	const { algorithm, challenge, salt, signature, difficulty, target_path } = ch
 	const target = Math.floor(0x100000000 / difficulty)
+	const enc = new TextEncoder()
 
 	for (let nonce = 0; ; nonce++) {
-		const hash = createHash("sha3-256")
-			.update(challenge + salt + nonce.toString(), "utf8")
-			.digest()
-		if (hash.readUInt32BE(0) < target) {
+		const hash = sha3_256(enc.encode(challenge + salt + nonce.toString()))
+		const val = ((hash[0] << 24) | (hash[1] << 16) | (hash[2] << 8) | hash[3]) >>> 0
+		if (val < target) {
 			return { algorithm, challenge, salt, answer: nonce, signature, target_path }
 		}
 	}

@@ -62,7 +62,8 @@
 			"Bash(Get-Content \"c:\\\\gencoder\\\\extension\\\\background.js\")",
 			"Bash(Select-Object -Last 5)",
 			"Bash(python -c \"import json,sys; p=json.load\\(sys.stdin\\); print\\('version:', p.get\\('version'\\)\\); scripts=p.get\\('scripts',{}\\); [print\\(k,':',v\\) for k,v in scripts.items\\(\\) if any\\(x in k for x in ['build','compile','package','vsix']\\)]\")",
-			"PowerShell(Get-ChildItem \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\\\\\" -Recurse | Where-Object {!$_.PSIsContainer} | Select-Object FullName, LastWriteTime | Sort-Object LastWriteTime -Descending | Select-Object -First 15)"
+			"PowerShell(Get-ChildItem \"C:\\\\Users\\\\MOHAMED AHMED\\\\.antigravity\\\\extensions\\\\mohmedofficial515.gencoder-3.82.0\\\\\" -Recurse | Where-Object {!$_.PSIsContainer} | Select-Object FullName, LastWriteTime | Sort-Object LastWriteTime -Descending | Select-Object -First 15)",
+			"Bash(node -e \"const {sha3_256}=require\\('@noble/hashes/sha3'\\); const h=sha3_256\\(Buffer.from\\('test'\\)\\); console.log\\('SHA3-256 OK, len:', h.length\\)\")"
 		]
 	},
 	"hooks": {
