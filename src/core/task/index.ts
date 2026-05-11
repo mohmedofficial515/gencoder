@@ -48,6 +48,7 @@ import { formatContentBlockToMarkdown } from "@integrations/misc/export-markdown
 import { processFilesIntoText } from "@integrations/misc/extract-text"
 import { showSystemNotification } from "@integrations/notifications"
 import { ITerminalManager } from "@integrations/terminal/types"
+import { researchIndexer, researchWatcher } from "@packages/research-mode"
 import { BrowserSession } from "@services/browser/BrowserSession"
 import { UrlContentFetcher } from "@services/browser/UrlContentFetcher"
 import { featureFlagsService } from "@services/feature-flags"
@@ -91,8 +92,6 @@ import {
 	StandaloneTerminalManager,
 } from "@/integrations/terminal"
 import { ClineError, ClineErrorType, ErrorService } from "@/services/error"
-import { researchIndexer } from "@/services/research/ResearchIndexer"
-import { researchWatcher } from "@/services/research/ResearchWatcher"
 import { telemetryService } from "@/services/telemetry"
 import { ClineClient } from "@/shared/cline"
 import {

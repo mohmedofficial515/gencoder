@@ -1,6 +1,5 @@
+import { researchIndexer, researchWatcher } from "@packages/research-mode"
 import { Boolean, EmptyRequest } from "@shared/proto/cline/common"
-import { researchIndexer } from "@/services/research/ResearchIndexer"
-import { researchWatcher } from "@/services/research/ResearchWatcher"
 import { Logger } from "@/shared/services/Logger"
 import { getCwd } from "@/utils/path"
 import { Controller } from ".."
