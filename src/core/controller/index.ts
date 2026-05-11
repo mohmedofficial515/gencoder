@@ -184,12 +184,16 @@ export class Controller {
 			this.stateManager.setGlobalState("userInfo", undefined)
 			clearRemoteConfig()
 
-			// Update API providers through cache service
+			// Reset provider only if it was "cline" (requires auth), otherwise keep user's selection
 			const apiConfiguration = this.stateManager.getApiConfiguration()
+			const resetProvider: ApiProvider =
+				apiConfiguration.actModeApiProvider === "cline"
+					? "openrouter"
+					: (apiConfiguration.actModeApiProvider ?? "openrouter")
 			const updatedConfig = {
 				...apiConfiguration,
-				planModeApiProvider: "openrouter" as ApiProvider,
-				actModeApiProvider: "openrouter" as ApiProvider,
+				planModeApiProvider: resetProvider,
+				actModeApiProvider: resetProvider,
 			}
 			this.stateManager.setApiConfiguration(updatedConfig)
 

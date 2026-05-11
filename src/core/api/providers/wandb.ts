@@ -1,4 +1,4 @@
-import { openAiModelInfoSaneDefaults, type ModelInfo, type WandbModelId, wandbDefaultModelId, wandbModels } from "@shared/api"
+import { type ModelInfo, openAiModelInfoSaneDefaults, type WandbModelId, wandbDefaultModelId, wandbModels } from "@shared/api"
 import OpenAI from "openai"
 import type { ChatCompletionTool as OpenAITool } from "openai/resources/chat/completions"
 import { ClineStorageMessage } from "@/shared/messages/content"

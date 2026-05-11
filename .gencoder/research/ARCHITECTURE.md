@@ -42,6 +42,7 @@
 - `proto/`
 - `scripts/`
 - `src/`
+- `start.bat/`
 - `test-bridge-ws.mjs/`
 - `test-setup.js/`
 - `test_bridge.py/`
@@ -51,5 +52,5 @@
 - `webview-ui/`
 
 ## Stats
-- Total files indexed: 110
-- Total lines of code: 72,711
+- Total files indexed: 111
+- Total lines of code: 72,934

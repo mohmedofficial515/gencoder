@@ -42,7 +42,7 @@ export async function readDirectoryRecursive(
 export async function synchronizeRuleToggles(
 	rulesDirectoryPath: string,
 	currentToggles: ClineRulesToggles,
-	allowedFileExtension: string = "",
+	allowedFileExtension = "",
 	excludedPaths: string[][] = [],
 ): Promise<ClineRulesToggles> {
 	// Create a copy of toggles to modify
