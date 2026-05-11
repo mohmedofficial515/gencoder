@@ -173,3 +173,13 @@
 | 2026-05-09 | `proto/descriptor_set.pb` | 1937 |
 | 2026-05-08 | `webview-ui/tailwind.config.mjs` | 118 |
 | 2026-05-08 | `webview-ui/tsconfig.app.json` | 61 |
+
+## Curated Feature Analyses
+> Hand-maintained by `research-feature-analyst`. Not auto-regenerated. These docs follow an 8-section competitive-analysis template (overview, current state, advantages, gaps, competitor landscape, recommendations P0/P1/P2, open questions, change log).
+
+| Doc | Feature area | Last refreshed |
+|---|---|---|
+| `API_PROVIDERS.md` | AI provider handlers — incl. DeepSeek Bridge + DeepSeek WebAPI (fork-original) | 2026-05-11 |
+| `BROWSER_BRIDGE.md` | Chrome extension bridge (`extension/`) + port-9876 WebSocket relay for chat.deepseek.com (fork-original) | 2026-05-11 |
+| `DEEPSEEK_INTEGRATION.md` | DeepSeek protocol layer — SHA3-256 PoW solver, 5-format SSE parser, chat-session lifecycle, DeepThink/Search/Expert modes (fork-original) | 2026-05-11 |
+
