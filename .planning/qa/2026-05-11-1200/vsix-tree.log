@@ -1,0 +1,164 @@
+gencoder-3.82.0.vsix
+├─ .env.example [5.41 KB]
+├─ .gitmodules [0.1 KB]
+├─ .nycrc.unit.json [0.77 KB]
+├─ .worktreeinclude [0.01 KB]
+├─ CHANGELOG.md [87.14 KB]
+├─ CLAUDE.md [0.07 KB]
+├─ LICENSE [11.08 KB]
+├─ README.md [11.05 KB]
+├─ SECURITY.md [0.93 KB]
+├─ biome.jsonc [4.82 KB]
+├─ build-and-deploy.bat [4.78 KB]
+├─ esbuild.mjs [7.25 KB]
+├─ fix-imports.js [1.41 KB]
+├─ go.work.sum [3.61 KB]
+├─ knip.json [0.48 KB]
+├─ package.json [17.07 KB]
+├─ test-bridge-ws.mjs [6.11 KB]
+├─ test-setup.js [1.36 KB]
+├─ test_bridge.py [2.35 KB]
+├─ .agents/
+│  └─ skills/
+│     └─ create-pull-request/
+│        └─ SKILL.md [6.08 KB]
+├─ .claude/
+│  ├─ README.md [10.06 KB]
+│  ├─ settings.json [14.7 KB]
+│  ├─ settings.local.json [2.03 KB]
+│  ├─ agents/
+│  │  ├─ design-architect.md [15.06 KB]
+│  │  ├─ design-implementer.md [10.17 KB]
+│  │  ├─ design-researcher.md [9.45 KB]
+│  │  ├─ modular-architect.md [16.73 KB]
+│  │  ├─ module-boundary-analyzer.md [7.23 KB]
+│  │  ├─ module-build-verifier.md [5.97 KB]
+│  │  ├─ qa-release-engineer.md [18.44 KB]
+│  │  ├─ research-feature-analyst.md [10.63 KB]
+│  │  ├─ vscode-ux-auditor.md [11.07 KB]
+│  │  └─ vsix-package-inspector.md [10.11 KB]
+│  ├─ commands/
+│  │  ├─ design.md [6.71 KB]
+│  │  ├─ hotfix-release.md [0.04 KB]
+│  │  ├─ modularize.md [5.31 KB]
+│  │  ├─ qa.md [6.32 KB]
+│  │  ├─ release.md [0.04 KB]
+│  │  └─ research.md [3.14 KB]
+│  └─ hooks/
+│     └─ claude-code-for-web-setup.sh [1.64 KB]
+├─ .codex/
+│  └─ environments/
+│     └─ environment.toml [1.72 KB]
+├─ .gencoder/
+│  └─ research/
+│     ├─ API_PROVIDERS.md [23.37 KB]
+│     ├─ ARCHITECTURE.md [1.02 KB]
+│     ├─ AUTH_ACCOUNT.md [6.78 KB]
+│     ├─ BROWSER_BRIDGE.md [31.65 KB]
+│     ├─ BUILD_AND_DEPLOYMENT.md [11.9 KB]
+│     ├─ CLI_ARCHITECTURE.md [15.03 KB]
+│     ├─ DEEPSEEK_INTEGRATION.md [32.14 KB]
+│     ├─ EVALUATION_SYSTEM.md [1.99 KB]
+│     ├─ I18N_LOCALIZATION.md [2.11 KB]
+│     ├─ INDEX.md [9.08 KB]
+│     ├─ INTEGRATIONS.md [4.83 KB]
+│     ├─ MCP_INTEGRATION.md [12.15 KB]
+│     ├─ PERMISSIONS_AND_AUTOAPPROVE.md [21.99 KB]
+│     ├─ SLASH_COMMANDS.md [4.74 KB]
+│     ├─ STATE_MANAGEMENT.md [10.7 KB]
+│     ├─ SYSTEM_PROMPT.md [8.14 KB]
+│     ├─ TERMINAL_EXECUTION.md [35.01 KB]
+│     ├─ TESTING_SETUP.md [13.04 KB]
+│     ├─ TOOL_EXECUTION.md [15.42 KB]
+│     ├─ WEBVIEW_UI.md [14.63 KB]
+│     ├─ project_plan_20_stages.md [3.41 KB]
+│     └─ .cache/
+│        └─ manifest.json [23.72 KB]
+├─ .planning/
+│  ├─ design/
+│  │  ├─ ROADMAP.md [10.85 KB]
+│  │  ├─ audits/
+│  │  │  ├─ onboarding.md [11.49 KB]
+│  │  │  └─ welcome.md [9.06 KB]
+│  │  ├─ onboarding/
+│  │  │  ├─ IMPLEMENT_LOG.md [5 KB]
+│  │  │  ├─ MANUAL_TEST_PLAN.md [9.23 KB]
+│  │  │  └─ SPEC.md [14.76 KB]
+│  │  ├─ research/
+│  │  │  ├─ onboarding.md [11.69 KB]
+│  │  │  └─ welcome.md [7.84 KB]
+│  │  └─ welcome/
+│  │     ├─ IMPLEMENT_LOG.md [3.96 KB]
+│  │     ├─ MANUAL_TEST_PLAN.md [8.32 KB]
+│  │     └─ SPEC.md [14.3 KB]
+│  ├─ modular/
+│  │  ├─ ROADMAP.md [12.42 KB]
+│  │  └─ research-mode/
+│  │     └─ VERIFY_LOG.md [5.05 KB]
+│  └─ qa/
+│     ├─ 2026-05-11-1200/
+│     │  ├─ step-2a-tsc-root.log 
+│     │  ├─ step-2b-tsc-webview.log 
+│     │  ├─ step-2c-tsc-cli.log 
+│     │  ├─ step-3-lint.log [0.24 KB]
+│     │  ├─ step-6-test-unit.log [167.21 KB]
+│     │  ├─ step-8-package.log [2.75 KB]
+│     │  ├─ step-9-vsce.log [0.42 KB]
+│     │  └─ vsix-tree.log 
+│     └─ 2026-05-11-2302/
+│        ├─ step-2-check-types.log [0.99 KB]
+│        ├─ step-3-lint.log [0.24 KB]
+│        ├─ step-4-compile.log [1.36 KB]
+│        ├─ step-6-test-unit.log [167.21 KB]
+│        ├─ step-8-package.log [2.75 KB]
+│        └─ step-9-vsce.log [0.42 KB]
+├─ assets/
+│  └─ icons/
+│     ├─ cline-bot.svg [1.69 KB]
+│     ├─ cline-bot.ttf [1.47 KB]
+│     ├─ cline-bot.woff [1.55 KB]
+│     ├─ icon.png [4.93 KB]
+│     ├─ icon.svg [2.04 KB]
+│     ├─ robot_panel_dark.png [0.88 KB]
+│     ├─ robot_panel_light.png [0.65 KB]
+│     ├─ sleepy-cline.svg [1.78 KB]
+│     └─ social/
+│        ├─ discord.svg [1.93 KB]
+│        ├─ github.svg [0.88 KB]
+│        ├─ linkedin.svg [0.97 KB]
+│        ├─ reddit.svg [1.62 KB]
+│        └─ x.svg [0.35 KB]
+├─ dist/
+│  ├─ extension.js [20.08 MB]
+│  ├─ tree-sitter-c.wasm [774.37 KB]
+│  ├─ tree-sitter-c_sharp.wasm [3.79 MB]
+│  ├─ tree-sitter-cpp.wasm [4.45 MB]
+│  ├─ tree-sitter-go.wasm [230.43 KB]
+│  ├─ tree-sitter-java.wasm [420.16 KB]
+│  ├─ tree-sitter-javascript.wasm [632.16 KB]
+│  ├─ tree-sitter-kotlin.wasm [3.86 MB]
+│  ├─ tree-sitter-php.wasm [793.55 KB]
+│  ├─ tree-sitter-python.wasm [464.95 KB]
+│  ├─ tree-sitter-ruby.wasm [2.01 MB]
+│  ├─ tree-sitter-rust.wasm [799.57 KB]
+│  ├─ tree-sitter-swift.wasm [3 MB]
+│  ├─ tree-sitter-tsx.wasm [2.3 MB]
+│  ├─ tree-sitter-typescript.wasm [2.23 MB]
+│  └─ tree-sitter.wasm [184.21 KB]
+├─ extension/
+│  ├─ README.md [1.77 KB]
+│  ├─ background.js [9.35 KB]
+│  ├─ content.js [4.66 KB]
+│  ├─ injected.js [21.02 KB]
+│  ├─ manifest.json [0.98 KB]
+│  ├─ popup.html [1.69 KB]
+│  └─ popup.js [1.25 KB]
+├─ locales/
+│  ├─ ar-sa/
+│  │  ├─ CODE_OF_CONDUCT.md [4.57 KB]
+│  │  ├─ CONTRIBUTING.md [6.84 KB]
+│  │  └─ README.md [16.13 KB]
+│  ├─ de/
+│  │  ├─ CODE_OF_CONDUCT.md [2.08 KB]
+│  │  ├─ CONTRIBUTING.md [5.16 KB]
+│

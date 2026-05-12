@@ -1,0 +1,63 @@
+
+> gencoder@3.82.0 package
+> npm run check-types && npm run build:webview && npm run lint && node esbuild.mjs --production
+
+
+> gencoder@3.82.0 check-types
+> npm run protos && npx tsc --noEmit && cd webview-ui && npx tsc --noEmit && cd ../cli && npx tsc --noEmit
+
+
+> gencoder@3.82.0 protos
+> node scripts/build-proto.mjs
+
+Compiling Protocol Buffers...
+Processing 21 proto files from C:\gencoder\proto
+Generated ProtoBus files at:
+- C:\gencoder\webview-ui\src\services\grpc-client.ts
+- C:\gencoder\src\generated\hosts\vscode\protobus-service-types.ts
+- C:\gencoder\src\generated\hosts\vscode\protobus-services.ts
+- C:\gencoder\src\generated\hosts\standalone\protobus-server-setup.ts
+Generated Host Bridge client files at:
+- C:\gencoder\src\generated\hosts\host-bridge-client-types.ts
+- C:\gencoder\src\generated\hosts\standalone\host-bridge-clients.ts
+- C:\gencoder\src\generated\hosts\vscode\hostbridge-grpc-service-config.ts
+
+> gencoder@3.82.0 postprotos
+> biome format src/shared/proto src/core/controller src/hosts/ webview-ui/src/services src/generated --write --no-errors-on-unmatched
+
+Formatted 271 files in 86ms. No fixes applied.
+
+> gencoder@3.82.0 build:webview
+> cd webview-ui && npm run build
+
+
+> webview-ui@0.3.0 build
+> tsc -b && vite build
+
+Building webview for vscode
+[36mvite v7.2.2 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 6826 modules transformed.
+rendering chunks...
+[2mbuild/[22m[32mindex.html                                     [39m[1m[2m    0.37 kB[22m[1m[22m
+[2mbuild/[22m[32massets/azeret-mono-latin-ext-400-normal.woff2  [39m[1m[2m    6.83 kB[22m[1m[22m
+[2mbuild/[22m[32massets/azeret-mono-latin-ext-400-normal.woff   [39m[1m[2m    9.46 kB[22m[1m[22m
+[2mbuild/[22m[32massets/azeret-mono-latin-400-normal.woff2      [39m[1m[2m   10.72 kB[22m[1m[22m
+[2mbuild/[22m[32massets/azeret-mono-latin-400-normal.woff       [39m[1m[2m   14.23 kB[22m[1m[22m
+[2mbuild/[22m[32massets/codicon.ttf                             [39m[1m[2m   80.19 kB[22m[1m[22m
+[2mbuild/[22m[32massets/cline_kanban_demo.webm                  [39m[1m[2m  916.27 kB[22m[1m[22m
+[2mbuild/[22m[32massets/cline_kanban_demo.mp4                   [39m[1m[2m3,738.64 kB[22m[1m[22m
+[2mbuild/[22m[35massets/index.css                               [39m[1m[2m  133.00 kB[22m[1m[22m
+[2mbuild/[22m[36massets/index.js                                [39m[1m[2m6,280.61 kB[22m[1m[22m
+[32m✓ built in 12.50s[39m
+
+> gencoder@3.82.0 lint
+> biome lint --no-errors-on-unmatched --files-ignore-unknown=true --diagnostic-level=error && npm run lint:proto
+
+Checked 1509 files in 6s. No fixes applied.
+
+> gencoder@3.82.0 lint:proto
+> bash ./scripts/proto-lint.sh
+
+[watch] build started
+[watch] build finished

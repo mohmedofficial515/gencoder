@@ -1,0 +1,9 @@
+
+> gencoder@3.82.0 lint
+> biome lint --no-errors-on-unmatched --files-ignore-unknown=true --diagnostic-level=error && npm run lint:proto
+
+Checked 1509 files in 5s. No fixes applied.
+
+> gencoder@3.82.0 lint:proto
+> bash ./scripts/proto-lint.sh
+
