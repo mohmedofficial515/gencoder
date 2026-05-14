@@ -318,3 +318,91 @@ export const deepPlanningToolResponse = (
 ) => {
 	return getDeepPlanningPrompt(focusChainSettings, providerInfo, enableNativeToolCalls)
 }
+
+/**
+ * Response for the `/deepplan` slash command. Primes the agent to read a
+ * DeepPlan handoff folder (`.deepplan-handoff/`) and execute the plan
+ * literally — no UX or feature-scope decisions, just translation from
+ * spec to code.
+ *
+ * The handoff folder is produced by DeepPlan's "Export to GenCoder" button
+ * (POST /api/agent/export-plan in DeepPlan). See `lib/handoff/schema.ts`
+ * in DeepPlan for the schema. Compatible with `deepplan-handoff/v1`.
+ */
+export const deepPlanToolResponse = () =>
+	`<explicit_instructions type="deepplan_execute">
+The user has invoked /deepplan. A DeepPlan handoff folder named \`.deepplan-handoff/\` exists in the workspace root and contains the **locked, complete plan** for the project: site map, wireframes, design system, shared components, and per-page implementation specs.
+
+You are now in **execution mode**. The plan is the source of truth — do not redesign or invent. Translate spec to code, one page at a time, until everything in \`01-pages.json\` ships.
+
+# Phase 0 — Read the plan (mandatory, in this order)
+
+Use \`read_file\` for each:
+
+1. \`.deepplan-handoff/manifest.json\` — verify \`schema === "deepplan-handoff/v1"\`; if not, stop and report.
+2. \`.deepplan-handoff/IMPLEMENTATION.md\` — the human-written execution protocol. **Follow it literally.**
+3. \`.deepplan-handoff/00-PROJECT.md\` — domain, vision, root decisions.
+4. \`.deepplan-handoff/01-pages.json\` — the full site map. Build a mental model: surfaces → modules → pages → features.
+5. \`.deepplan-handoff/03-design-system.json\` — libraries and design tokens. **These are the only libraries you may install.**
+6. Every file under \`.deepplan-handoff/02-wireframes/\` — use \`list_files\` first, then \`read_file\` each \`<page-id>.json\`.
+7. \`.deepplan-handoff/04-shared-components/_index.json\` then read each \`.tsx\` file it references — these are pre-built components to drop in.
+8. \`.deepplan-handoff/05-page-designs/_index.json\` then read each \`.tsx\` file it references — these are pre-designed page TSX you use as the **starting point** for each page (refine for routing + data wiring only; never redesign).
+
+After reading, **report back with a one-paragraph plan summary**: how many surfaces, modules, pages, the locked stack (Next/Vite/etc), libraries to install, and the rough order in which you will implement pages.
+
+# Phase 1 — Scaffold
+
+- Default stack: **Next.js 15 App Router + TypeScript + Tailwind + shadcn** unless \`03-design-system.json\` overrides.
+- Initialize the project (\`npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias "@/*"\`) only if no \`package.json\` exists. Otherwise extend the existing project in place.
+- Apply RTL globally: in \`app/layout.tsx\` set \`<html lang="ar" dir="rtl">\`. This is load-bearing — every page assumes RTL.
+- Install **only** libraries listed in \`03-design-system.json#libraries[]\`. If a needed library is missing from that list, **stop and ask** — do not install on your own.
+- Translate \`03-design-system.json#tokens[]\` into:
+  - CSS custom properties in \`app/globals.css\` (\`:root { --color-primary: <value>; ... }\`)
+  - Tailwind theme extensions in \`tailwind.config.ts\` (\`theme.extend.colors\`, \`spacing\`, \`borderRadius\`, etc.)
+- Run \`npm run build\` and confirm a green baseline before touching pages.
+
+# Phase 2 — Drop shared components
+
+For every entry in \`.deepplan-handoff/04-shared-components/_index.json\`:
+
+- Copy the referenced \`.tsx\` file to \`components/shared/<id>.tsx\` **unmodified**.
+- Resolve imports inside each component file to match the project's path alias.
+- Run \`npm run build\` once after all shared components land. Fix any type/import errors before proceeding.
+
+# Phase 3 — Implement pages (one page = one atomic commit)
+
+Walk every page in \`01-pages.json\` (surfaces → modules → pages). For each page \`P\`:
+
+1. Open the page's spec: \`02-wireframes/<page-id>.json\`.
+2. Create the route file at the spec's \`routeHint\` path.
+3. Use \`05-page-designs/<page-id>.tsx\` (if it exists) as the **starting TSX**. Otherwise reconstruct the layout from \`selectedWireframe\` blocks.
+4. Implement every \`sections[]\` entry in order. Inside each section, render its \`components[]\` using the closest matching shadcn primitive + any \`components/shared/\` component that fits.
+5. Implement every \`states[]\` variant — loading skeleton, empty illustration, error message, success view. Use \`stateCondition\` to decide which to render.
+6. Wire flows from \`flows[]\` (Search → Filter → Click, etc.) using state hooks + handlers.
+7. For each entry in \`apis[]\`, scaffold a Next.js Route Handler under \`app/api/...\` matching \`httpMethod\` + \`httpPath\`. If no real backend exists, return mocked data that conforms to the relevant \`schemas[]\` entry.
+8. Convert every \`schemas[]\` into a TypeScript \`type\` or \`interface\` under \`types/\` and import it into the page.
+9. Verify every \`acceptance[]\` Given/When/Then is observable in the rendered page (manually trace each one).
+10. **Build gate**: \`npm run build\`. If it fails, fix before moving to the next page.
+11. Commit: \`git add -A && git commit -m "feat(page): <pageLabel>"\`.
+
+# Hard rules — do not violate
+
+- **No libraries outside the locked list.** If you need one not in \`03-design-system.json\`, stop and ask.
+- **No token mutations.** Consume tokens; never invent new design values.
+- **RTL utilities only.** Tailwind: \`ms-*\` / \`me-*\` / \`ps-*\` / \`pe-*\` / \`text-start\` / \`text-end\` / \`border-s-*\` / \`border-e-*\`. **NEVER** \`ml-*\`, \`mr-*\`, \`pl-*\`, \`pr-*\`, \`text-left\`, \`text-right\`, \`left-*\`, \`right-*\`, \`border-l-*\`, \`border-r-*\`.
+- **All UI strings in Arabic.** Use \`pageLabel\`, \`section.label\`, \`component.label\` verbatim. No English fallbacks.
+- **Build between pages.** Do not stack failures; \`npm run build\` is the gate after every page.
+- **Use \`new_task\` only for context overflow.** If conversation grows large after several pages, summarize via the \`new_task\` tool to preserve context. Do not split for any other reason.
+- **Continue without pausing for confirmation.** The plan is locked; you do not need approval to implement what the plan says. Only stop on: missing library in design system, schema-version mismatch in manifest, or build failure you cannot fix.
+
+# Finish line
+
+When every page in \`01-pages.json\` has been implemented and committed:
+
+1. Final \`npm run build\` — must pass with zero errors.
+2. \`npm run dev\` — launch in browser. Visit each surface and at least one page per module. Capture any runtime errors and fix them.
+3. Report back with: total pages implemented, deviations from the spec (with rationale for each), full build output, and a list of any libraries that were missing from the design system but ended up needed (so the user can update the plan).
+
+Begin by listing \`.deepplan-handoff/\` with \`list_files\` and reading the files in the Phase 0 order above. Do not skip steps.
+</explicit_instructions>
+`
